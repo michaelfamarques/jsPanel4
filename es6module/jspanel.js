@@ -2,7 +2,7 @@
 /* global jsPanel, $ */
 'use strict';
 
-export const jsPanel = {
+export var jsPanel = {
 
     version: '4.2.1',
     date:    '2018-09-14 13:11',
@@ -205,7 +205,7 @@ export const jsPanel = {
             }
         }
 
-        const conf = ajaxConfig,
+        var conf = ajaxConfig,
             configDefaults = {
                 method: 'GET',
                 async: true,
@@ -237,7 +237,7 @@ export const jsPanel = {
             return obj;
         }
 
-        const xhr = new XMLHttpRequest();
+        var xhr = new XMLHttpRequest();
 
         xhr.onreadystatechange = () => {
             if (xhr.readyState === 4) {
@@ -247,7 +247,7 @@ export const jsPanel = {
                     // extract and eval content of script tags if "evalscripttags"
                     if (config.evalscripttags) {
                         // get all script tags within responseText
-                        const scripttags = xhr.responseText.match(/<script\b[^>]*>([\s\S]*?)<\/script>/gi);
+                        var scripttags = xhr.responseText.match(/<script\b[^>]*>([\s\S]*?)<\/script>/gi);
                         if (scripttags) {
                             scripttags.forEach((tag) => {
                                 // remove tags from string and trim it
@@ -266,10 +266,10 @@ export const jsPanel = {
 
                 // resize and reposition panel if either width or height is set to 'auto'
                 if (objIsPanel) {
-                    const oContentSize = obj.options.contentSize;
+                    var oContentSize = obj.options.contentSize;
                     if (typeof oContentSize === 'string' && oContentSize.match(/auto/i)) {
-                        const parts = oContentSize.split(' ');
-                        const sizes = Object.assign({}, {width: parts[0], height: parts[1]});
+                        var parts = oContentSize.split(' ');
+                        var sizes = Object.assign({}, {width: parts[0], height: parts[1]});
                         if (config.autoresize) {
                             obj.resize(sizes);
                         }
@@ -279,7 +279,7 @@ export const jsPanel = {
                             }
                         }
                     } else if (typeof oContentSize === 'object' && (oContentSize.width === 'auto' || oContentSize.height === 'auto')) {
-                        const sizes = Object.assign({}, oContentSize);
+                        var sizes = Object.assign({}, oContentSize);
                         if (config.autoresize) {
                             obj.resize(sizes);
                         }
@@ -319,7 +319,7 @@ export const jsPanel = {
     },
 
     calcColors(primaryColor) {
-        const primeColor = this.color(primaryColor),
+        var primeColor = this.color(primaryColor),
             secondColor = this.lighten(primaryColor, 0.81),
             thirdColor = this.darken(primaryColor, 0.5),
             fontColorForPrimary = this.perceivedBrightness(primaryColor) <= 0.556 ? '#ffffff' : '#000000',
@@ -332,7 +332,7 @@ export const jsPanel = {
 
         let color = val.toLowerCase(),
             r, g, b, h, s, l, match, channels, hsl, result = {};
-        const hexPattern = /^#?([0-9a-f]{3}|[0-9a-f]{6})$/gi, // matches "#123" or "#f05a78" with or without "#"
+        var hexPattern = /^#?([0-9a-f]{3}|[0-9a-f]{6})$/gi, // matches "#123" or "#f05a78" with or without "#"
             RGBAPattern = /^rgba?\(([0-9]{1,3}),([0-9]{1,3}),([0-9]{1,3}),?(0|1|0\.[0-9]{1,2}|\.[0-9]{1,2})?\)$/gi, // matches rgb/rgba color values, whitespace allowed
             HSLAPattern = /^hsla?\(([0-9]{1,3}),([0-9]{1,3}%),([0-9]{1,3}%),?(0|1|0\.[0-9]{1,2}|\.[0-9]{1,2})?\)$/gi,
             namedColors = {
@@ -578,7 +578,7 @@ export const jsPanel = {
     },
 
     createPanelTemplate(dataAttr = true) {
-        const panel = document.createElement('div');
+        var panel = document.createElement('div');
         panel.className = 'jsPanel';
         if (dataAttr) {
             ['close', 'maximize', 'normalize', 'minimize', 'smallify', 'smallifyrev'].forEach((item) => {
@@ -609,7 +609,7 @@ export const jsPanel = {
     },
 
     createMinimizedTemplate() {
-        const panel = document.createElement('div');
+        var panel = document.createElement('div');
         panel.className = 'jsPanel-replacement';
         panel.innerHTML = `<div class="jsPanel-hdr">
                                 <div class="jsPanel-headerbar">
@@ -628,7 +628,7 @@ export const jsPanel = {
     },
 
     createSnapArea(panel, pos, snapsens) {
-        const el = document.createElement('div'),
+        var el = document.createElement('div'),
             parent = panel.parentElement;
         el.className = `jsPanel-snap-area jsPanel-snap-area-${pos}`;
         if (pos === 'lt' || pos === 'rt' || pos === 'rb' || pos === 'lb') {
@@ -649,7 +649,7 @@ export const jsPanel = {
 
     darken(val, amount) {
         // amount is value between 0 and 1
-        const hsl = this.color(val).hsl,
+        var hsl = this.color(val).hsl,
             l = parseFloat(hsl.l),
             lnew = l - (l * amount) + '%';
         return `hsl(${hsl.h},${hsl.s},${lnew})`;
@@ -660,7 +660,7 @@ export const jsPanel = {
             opts = Object.assign({}, this.defaults.dragit, options),
             dragElmt,
             containment;
-        const jspaneldragstart = new CustomEvent('jspaneldragstart', {detail: elmt.id}),
+        var jspaneldragstart = new CustomEvent('jspaneldragstart', {detail: elmt.id}),
             jspaneldrag      = new CustomEvent('jspaneldrag',      {detail: elmt.id}),
             jspaneldragstop  = new CustomEvent('jspaneldragstop',  {detail: elmt.id});
 
@@ -695,7 +695,7 @@ export const jsPanel = {
                     elmt.controlbar.style.pointerEvents = 'none';
                     elmt.content.style.pointerEvents = 'none';  // without this code handler might not be unbound when content has iframe or object tag
 
-                    const startStyles  = window.getComputedStyle(elmt),
+                    var startStyles  = window.getComputedStyle(elmt),
                         startLeft    = parseFloat(startStyles.left),
                         startTop     = parseFloat(startStyles.top),
                         psx          = e.touches ? e.touches[0].clientX : e.clientX,	// pointer x on mousedown (don't use pageX, doesn't work on FF for Android)
@@ -736,7 +736,7 @@ export const jsPanel = {
                         }
 
                         let elmtL, elmtL2, elmtT, elmtT2, elmtR, elmtR2, elmtB, elmtB2, right, bottom;
-                        const pmx = e.touches ? e.touches[0].clientX : e.clientX,	// current pointer x while pointer moves (don't use pageX, doesn't work on FF for Android)
+                        var pmx = e.touches ? e.touches[0].clientX : e.clientX,	// current pointer x while pointer moves (don't use pageX, doesn't work on FF for Android)
                             pmy   = e.touches ? e.touches[0].clientY : e.clientY,	// current pointer y while pointer moves (don't use pageY, doesn't work on FF for Android)
                             dragStyles = window.getComputedStyle(elmt);             // get current styles while draging
 
@@ -771,7 +771,7 @@ export const jsPanel = {
                             elmtB2 = elmtB ** 2;
                         }
 
-                        const lefttopVectorDrag   = Math.sqrt(elmtL2 + elmtT2),
+                        var lefttopVectorDrag   = Math.sqrt(elmtL2 + elmtT2),
                             leftbottomVectorDrag  = Math.sqrt(elmtL2 + elmtB2),
                             righttopVectorDrag    = Math.sqrt(elmtR2 + elmtT2),
                             rightbottomVectorDrag = Math.sqrt(elmtR2 + elmtB2),
@@ -798,7 +798,7 @@ export const jsPanel = {
 
                         // apply grid option
                         if (opts.grid) {
-                            const cx   = parseFloat(dragStyles.left),
+                            var cx   = parseFloat(dragStyles.left),
                                 cy   = parseFloat(dragStyles.top),
                                 modX = cx % opts.grid[0],
                                 modY = cy % opts.grid[1];
@@ -823,8 +823,8 @@ export const jsPanel = {
                                 maxLeft = window.innerWidth - parseFloat(dragStyles.width) - containment[1];
                                 maxTop = window.innerHeight - parseFloat(dragStyles.height) - containment[2];
                             } else {
-                                const xCorr = parseFloat(parentStyles.borderLeftWidth) + parseFloat(parentStyles.borderRightWidth);
-                                const yCorr = parseFloat(parentStyles.borderTopWidth) + parseFloat(parentStyles.borderBottomWidth);
+                                var xCorr = parseFloat(parentStyles.borderLeftWidth) + parseFloat(parentStyles.borderRightWidth);
+                                var yCorr = parseFloat(parentStyles.borderTopWidth) + parseFloat(parentStyles.borderBottomWidth);
                                 maxLeft = parentRect.width - parseFloat(dragStyles.width) - containment[1] - xCorr;
                                 maxTop = parentRect.height - parseFloat(dragStyles.height) - containment[2] - yCorr;
                             }
@@ -850,7 +850,7 @@ export const jsPanel = {
 
                         // apply snap options
                         if (opts.snap) {
-                            const snapSens = opts.snap.sensitivity,
+                            var snapSens = opts.snap.sensitivity,
                                 topSensAreaLength = parent === document.body ? window.innerWidth/8 : parentRect.width/8,
                                 sideSensAreaLength = parent === document.body ? window.innerHeight/8 : parentRect.height/8;
                             elmt.snappableTo = false;
@@ -1025,7 +1025,7 @@ export const jsPanel = {
                 // extract and eval content of script tags if "evalscripttags"
                 if (conf.evalscripttags) {
                     // get all script tags within responseText
-                    const scripttags = response.match(/<script\b[^>]*>([\s\S]*?)<\/script>/gi);
+                    var scripttags = response.match(/<script\b[^>]*>([\s\S]*?)<\/script>/gi);
                     if (scripttags) {
                         scripttags.forEach((tag) => {
                             // remove tags from string and trim it
@@ -1037,11 +1037,11 @@ export const jsPanel = {
                 }
 
                 // resize and reposition panel if either width or height is set to 'auto'
-                const oContentSize = obj.options.contentSize;
+                var oContentSize = obj.options.contentSize;
                 if (conf.autoresize || conf.autoreposition) {
                     if (typeof oContentSize === 'string' && oContentSize.match(/auto/i)) {
-                        const parts = oContentSize.split(' ');
-                        const sizes = Object.assign({}, {width: parts[0], height: parts[1]});
+                        var parts = oContentSize.split(' ');
+                        var sizes = Object.assign({}, {width: parts[0], height: parts[1]});
                         if (conf.autoresize) {
                             obj.resize(sizes);
                         }
@@ -1051,7 +1051,7 @@ export const jsPanel = {
                             }
                         }
                     } else if (typeof oContentSize === 'object' && (oContentSize.width === 'auto' || oContentSize.height === 'auto')) {
-                        const sizes = Object.assign({}, oContentSize);
+                        var sizes = Object.assign({}, oContentSize);
                         if (conf.autoresize) {
                             obj.resize(sizes);
                         }
@@ -1077,7 +1077,7 @@ export const jsPanel = {
                 obj.normalize();
             }
         } else {
-            const newArr = Array.prototype.slice.call(document.querySelectorAll('.jsPanel-standard')).map((panel) => {
+            var newArr = Array.prototype.slice.call(document.querySelectorAll('.jsPanel-standard')).map((panel) => {
                 return panel.style.zIndex;
             });
             if (Math.max(...newArr) > obj.style.zIndex) {
@@ -1147,14 +1147,14 @@ export const jsPanel = {
 
     lighten(val, amount) {
         // amount is value between 0 and 1
-        const hsl = this.color(val).hsl,
+        var hsl = this.color(val).hsl,
             l = parseFloat(hsl.l),
             lnew = (l + ((100 - l) * amount)) + '%';
         return `hsl(${hsl.h},${hsl.s},${lnew})`;
     },
 
     perceivedBrightness(val) {
-        const rgb = this.color(val).rgb;
+        var rgb = this.color(val).rgb;
         // return value is in the range 0 - 1 and input rgb values must also be in the range 0 - 1
         // algorithm from: https://en.wikipedia.org/wiki/Rec._2020
         return ( (rgb.r / 255 * 0.2627) + (rgb.g / 255 * 0.6780) + (rgb.b / 255 * 0.0593) );
@@ -1175,7 +1175,7 @@ export const jsPanel = {
             }
         }
 
-        const error = new window.jsPanelError('NO NEW PANEL CREATED!\nThe container to append the panel to does not exist or a container was not specified!');
+        var error = new window.jsPanelError('NO NEW PANEL CREATED!\nThe container to append the panel to does not exist or a container was not specified!');
         try {
             throw error;
         } catch (e) {
@@ -1226,7 +1226,7 @@ export const jsPanel = {
             if (parent === document.body) {
                 values.width = window.innerWidth * (parseFloat(values.width)/100) + 'px';
             } else {
-                const prtStyles = window.getComputedStyle(parent),
+                var prtStyles = window.getComputedStyle(parent),
                     border = parseFloat(prtStyles.borderLeftWidth) + parseFloat(prtStyles.borderRightWidth);
                 values.width = (parseFloat(prtStyles.width) - border) * (parseFloat(values.width)/100) + 'px';
             }
@@ -1246,7 +1246,7 @@ export const jsPanel = {
             if (parent === document.body) {
                 values.height = window.innerHeight * (parseFloat(values.height)/100) + 'px';
             } else {
-                const prtStyles = window.getComputedStyle(parent),
+                var prtStyles = window.getComputedStyle(parent),
                     border = parseFloat(prtStyles.borderTopWidth) + parseFloat(prtStyles.borderBottomWidth);
                 values.height = (parseFloat(prtStyles.height) - border) * (parseFloat(values.height)/100) + 'px';
             }
@@ -1263,7 +1263,7 @@ export const jsPanel = {
     },
 
     pOposition(positionString) {
-        const posValue   = positionString.match(/\b[a-z]{4,6}-{1}[a-z]{3,6}\b/i),
+        var posValue   = positionString.match(/\b[a-z]{4,6}-{1}[a-z]{3,6}\b/i),
             autoposValue = positionString.match(/down|up|right([^-]|$)|left([^-]|$)/i),
             offsetValue  = positionString.match(/[+-]?\d?\.?\d+([a-z%]{2,4}\b|%?)/gi);
         let settings;
@@ -1307,7 +1307,7 @@ export const jsPanel = {
             myXcorrection = 0, myYcorrection = 0,
             atXcorrection = 0, atYcorrection = 0;
 
-        const defaults = {my:'center', at:'center', of:'window', offsetX:'0px', offsetY:'0px'},
+        var defaults = {my:'center', at:'center', of:'window', offsetX:'0px', offsetY:'0px'},
             windowRect = {
                 width: document.documentElement.clientWidth,
                 height: window.innerHeight
@@ -1329,7 +1329,7 @@ export const jsPanel = {
             return elmtToPosition;
         }
 
-        const elmtToPositionRect = elmtToPosition.getBoundingClientRect();
+        var elmtToPositionRect = elmtToPosition.getBoundingClientRect();
         // contains read-only left, top, right, bottom, x, y, width, height describing the !! border-box !! in pixels
         // Properties other than width and height are relative to the top-left of the viewport!!
 
@@ -1340,10 +1340,10 @@ export const jsPanel = {
             posSettings = Object.assign({}, defaults, position);
         }
 
-        const parentContainer        = elmtToPosition.parentElement;
-        const parentContainerStyles  = window.getComputedStyle(parentContainer);
-        const parentContainerRect    = parentContainer.getBoundingClientRect();
-        const parentContainerTagName = parentContainer.tagName.toLowerCase();
+        var parentContainer        = elmtToPosition.parentElement;
+        var parentContainerStyles  = window.getComputedStyle(parentContainer);
+        var parentContainerRect    = parentContainer.getBoundingClientRect();
+        var parentContainerTagName = parentContainer.tagName.toLowerCase();
 
         if (posSettings.of && posSettings.of !== 'window') {
             if (typeof posSettings.of === 'function') {
@@ -1403,7 +1403,7 @@ export const jsPanel = {
 
         // SCENARIO 2 - panel appended to body and positioned relative to another element in document
         else if (parentContainerTagName === 'body' && posSettings.of !== 'window') {
-            const elmtToPositionAgainstRect = elmtToPositionAgainst.getBoundingClientRect();
+            var elmtToPositionAgainstRect = elmtToPositionAgainst.getBoundingClientRect();
 
             // calc left corrections due to position and size of elmtToPositionAgainst
             if (posSettings.at.match(/^center-top$|^center$|^center-bottom$/i)) {
@@ -1429,7 +1429,7 @@ export const jsPanel = {
         // SCENARIO 3 - // panel appended to other element than body and positioned relative to its container
         else if (parentContainerTagName !== 'body' && (posSettings.of === 'window' || !posSettings.of)) {
             // calc corrections to position panel relative to parentContainer content-box, not border-box
-            const pContainerLRBorderWidth = parseFloat(parentContainerStyles.borderLeftWidth) + parseFloat(parentContainerStyles.borderRightWidth),
+            var pContainerLRBorderWidth = parseFloat(parentContainerStyles.borderLeftWidth) + parseFloat(parentContainerStyles.borderRightWidth),
                 pContainerTBBorderWidth = parseFloat(parentContainerStyles.borderTopWidth) + parseFloat(parentContainerStyles.borderBottomWidth);
 
             // calc left corrections due to parent container width
@@ -1451,7 +1451,7 @@ export const jsPanel = {
 
         // SCENARIO 4 - panel appended to other element than body and positioned relative to an element within its container
         else if (parentContainerTagName !== 'body' && parentContainer.contains(elmtToPositionAgainst)) {
-            const elmtToPositionAgainstRect = elmtToPositionAgainst.getBoundingClientRect();
+            var elmtToPositionAgainstRect = elmtToPositionAgainst.getBoundingClientRect();
 
             // calc left corrections due to position and size of elmtToPositionAgainst
             if (posSettings.at.match(/^center-top$|^center$|^center-bottom$/i)) {
@@ -1482,11 +1482,11 @@ export const jsPanel = {
             }
 
             // add class with position and autoposition direction
-            const newClass = `${posSettings.my}-${posSettings.autoposition.toLowerCase()}`;
+            var newClass = `${posSettings.my}-${posSettings.autoposition.toLowerCase()}`;
             elmtToPosition.classList.add(newClass);
 
             // get all panels with same class
-            const newClassAll = Array.prototype.slice.call(document.querySelectorAll(`.${newClass}`)),
+            var newClassAll = Array.prototype.slice.call(document.querySelectorAll(`.${newClass}`)),
                 ownIndex = newClassAll.indexOf(elmtToPosition);
 
             // if more than 1 position new panel
@@ -1727,7 +1727,7 @@ export const jsPanel = {
             resizePanel,
             resizestarted,
             w, h;
-        const jspanelresizestart = new CustomEvent('jspanelresizestart', {detail: elmt.id}),
+        var jspanelresizestart = new CustomEvent('jspanelresizestart', {detail: elmt.id}),
             jspanelresize      = new CustomEvent('jspanelresize', {detail: elmt.id}),
             jspanelresizestop  = new CustomEvent('jspanelresizestop', {detail: elmt.id});
 
@@ -1736,7 +1736,7 @@ export const jsPanel = {
         containment = this.pOcontainment(opts.containment);
 
         opts.handles.split(',').forEach((item) => {
-            const node = document.createElement('DIV');
+            var node = document.createElement('DIV');
             node.className = `jsPanel-resizeit-handle jsPanel-resizeit-${item.trim()}`;
             node.style.zIndex = 90;
             elmt.append(node);
@@ -1754,7 +1754,7 @@ export const jsPanel = {
 
                     elmt.content.style.pointerEvents = 'none';
 
-                    const elmtRect = elmt.getBoundingClientRect(),           /* needs to be calculated on pointerdown!! */
+                    var elmtRect = elmt.getBoundingClientRect(),           /* needs to be calculated on pointerdown!! */
                         elmtParentRect = elmtParent.getBoundingClientRect(), /* needs to be calculated on pointerdown!! */
                         elmtParentStyles = window.getComputedStyle(elmtParent, null),
                         elmtParentBLW = parseInt(elmtParentStyles.borderLeftWidth, 10),
@@ -1806,7 +1806,7 @@ export const jsPanel = {
                     }
 
                     // calculate corrections for rotated panels
-                    const computedStyle = window.getComputedStyle(elmt);
+                    var computedStyle = window.getComputedStyle(elmt);
                     let wDif = parseFloat(computedStyle.width) - elmtRect.width,
                         hDif = parseFloat(computedStyle.height) - elmtRect.height,
                         xDif = parseFloat(computedStyle.left) - elmtRect.left,
@@ -1878,7 +1878,7 @@ export const jsPanel = {
                         window.getSelection().removeAllRanges();
 
                         // get current position and size values while resizing
-                        const styles = window.getComputedStyle(elmt),
+                        var styles = window.getComputedStyle(elmt),
                             values = {
                                 left:   parseFloat(styles.left),
                                 top:    parseFloat(styles.top),
@@ -1921,7 +1921,7 @@ export const jsPanel = {
                 if (e.target.classList && e.target.classList.contains('jsPanel-resizeit-handle')) {
 
                     let isLeftChange, isTopChange;
-                    const cl = e.target.className;
+                    var cl = e.target.className;
                     if (cl.match(/jsPanel-resizeit-nw|jsPanel-resizeit-w|jsPanel-resizeit-sw/i)) {
                         isLeftChange = true;
                     }
@@ -1934,7 +1934,7 @@ export const jsPanel = {
                         if (opts.grid.length === 1) {
                             opts.grid[1] = opts.grid[0];
                         }
-                        const cw   = parseFloat(elmt.style.width),
+                        var cw   = parseFloat(elmt.style.width),
                             ch   = parseFloat(elmt.style.height),
                             modW = cw % opts.grid[0],
                             modH = ch % opts.grid[1],
@@ -2033,7 +2033,7 @@ export const jsPanel = {
             let offsets = [0, 0];
             if (panel.options.dragit.snap.containment) {
                 if (panel.options.dragit.containment) {
-                    const containment = this.pOcontainment(panel.options.dragit.containment),
+                    var containment = this.pOcontainment(panel.options.dragit.containment),
                         position    = panel.snappableTo;
                     if (position.startsWith('left')) {
                         offsets[0] = containment[3];
@@ -2079,11 +2079,11 @@ export const jsPanel = {
         } else if (typeof options.id === 'function') {
             options.id = options.id();
         }
-        const p = document.getElementById(options.id);
+        var p = document.getElementById(options.id);
         if (p !== null) {
             // if a panel with passed id already exists, front it and return error object
             if (p.classList.contains('jsPanel')) {p.front();}
-            const error = new window.jsPanelError('NO NEW PANEL CREATED!\nAn element with the ID <'+ options.id + '> already exists in the document.');
+            var error = new window.jsPanelError('NO NEW PANEL CREATED!\nAn element with the ID <'+ options.id + '> already exists in the document.');
             try {
                 throw error;
             } catch (e) {
@@ -2093,7 +2093,7 @@ export const jsPanel = {
         }
 
         // check whether container is valid -> if not return and log error
-        const panelContainer = this.pOcontainer(options.container, cb);
+        var panelContainer = this.pOcontainer(options.container, cb);
         if (panelContainer && panelContainer.message) {
             return console.error(panelContainer.name+':', panelContainer.message);
         }
@@ -2169,7 +2169,7 @@ export const jsPanel = {
         self.snapped       = false;
 
         // Events
-        const jspanelloaded         = new CustomEvent('jspanelloaded', {'detail': options.id}),
+        var jspanelloaded         = new CustomEvent('jspanelloaded', {'detail': options.id}),
             jspanelbeforeclose      = new CustomEvent('jspanelbeforeclose', {'detail': options.id}),
             jspanelclosed           = new CustomEvent('jspanelclosed', {'detail': options.id}),
             jspanelstatuschange     = new CustomEvent('jspanelstatuschange', {'detail': options.id}),
@@ -2186,7 +2186,7 @@ export const jsPanel = {
             jspanelfronted          = new CustomEvent('jspanelfronted', {'detail': options.id});
 
         // controls handlers
-        const hasCloseBtn  = self.querySelector('.jsPanel-btn-close'),
+        var hasCloseBtn  = self.querySelector('.jsPanel-btn-close'),
             hasMaxBtn      = self.querySelector('.jsPanel-btn-maximize'),
             hasNormBtn     = self.querySelector('.jsPanel-btn-normalize'),
             hasSmallBtn    = self.querySelector('.jsPanel-btn-smallify'),
@@ -2281,7 +2281,7 @@ export const jsPanel = {
                     }
                 });
             } else if (typeof tb === 'function') {
-                const tool = tb.call(self, self);
+                var tool = tb.call(self, self);
                 if (typeof tool === 'string') {
                     place.innerHTML = tool;
                 } else {
@@ -2345,7 +2345,7 @@ export const jsPanel = {
         };
 
         self.applyBootstrapTheme = (themeDetails) => {
-            const bsTheme = themeDetails.bstheme,
+            var bsTheme = themeDetails.bstheme,
                 bsVersion = $.fn.button.Constructor.VERSION[0];
 
             if (bsVersion === '4') {
@@ -2388,7 +2388,7 @@ export const jsPanel = {
         };
 
         self.applyThemeBorder = (themeDetails) => {
-            const bordervalues = options.border.split(' ');
+            var bordervalues = options.border.split(' ');
             self.style.borderWidth = bordervalues[0];
             self.style.borderStyle = bordervalues[1];
             self.style.borderColor = bordervalues[2];
@@ -2451,7 +2451,7 @@ export const jsPanel = {
         };
 
         self.calcSizeFactors = () => {
-            const styles = window.getComputedStyle(self);
+            var styles = window.getComputedStyle(self);
             if (options.container === document.body) {
                 self.hf = parseFloat(self.style.left) / (document.body.clientWidth - parseFloat(self.style.width));
                 self.vf = parseFloat(self.style.top) / (window.innerHeight - parseFloat(styles.height));
@@ -2486,8 +2486,8 @@ export const jsPanel = {
 
         self.close = (callback) => {
 
-            const doClose = () => {
-                const panelId = options.id;
+            var doClose = () => {
+                var panelId = options.id;
 
                 if (closetimer) {window.clearTimeout(closetimer);}
 
@@ -2543,7 +2543,7 @@ export const jsPanel = {
         };
 
         self.createMinimizedReplacement = () => {
-            const tpl = jsPanel.createMinimizedTemplate(),
+            var tpl = jsPanel.createMinimizedTemplate(),
                 color = window.getComputedStyle(self.headertitle).color,
                 font = options.iconfont,
                 controlbar = tpl.querySelector('.jsPanel-controlbar');
@@ -2592,7 +2592,7 @@ export const jsPanel = {
         };
 
         self.dragit = (string) => {
-            const dragitOptions = Object.assign({}, jsPanel.defaults.dragit, options.dragit),
+            var dragitOptions = Object.assign({}, jsPanel.defaults.dragit, options.dragit),
                 handles = self.querySelectorAll(dragitOptions.handles);
             if (string === 'disable') {
                 handles.forEach((handle) => {
@@ -2621,7 +2621,7 @@ export const jsPanel = {
         };
 
         self.getThemeDetails = (th) => {
-            const passedTheme = th.toLowerCase().replace(/ /g, ''),
+            var passedTheme = th.toLowerCase().replace(/ /g, ''),
                 theme = {color: false, colors: false, filling: false, bs: false, bstheme: false};
 
             if (passedTheme.substr(-6, 6) === 'filled') {
@@ -2638,7 +2638,7 @@ export const jsPanel = {
 
             // if first part of theme includes a "-" it's assumed to be a bootstrap theme
             if (theme.color.match('-')) {
-                const bsVariant = theme.color.split('-');
+                var bsVariant = theme.color.split('-');
                 theme.bs = bsVariant[0];
                 theme.bstheme = bsVariant[1];
                 theme.mdbStyle = bsVariant[2] || undefined;
@@ -2649,7 +2649,7 @@ export const jsPanel = {
 
         self.isChildpanel = () => {
             // if panel is childpanel of another panel returns parentpanel
-            const pp = self.closest('.jsPanel-content');
+            var pp = self.closest('.jsPanel-content');
             return pp ? pp.parentElement : false;
         };
 
@@ -2660,7 +2660,7 @@ export const jsPanel = {
 
             document.dispatchEvent(jspanelbeforemaximize);
 
-            const parent = self.parentElement,
+            var parent = self.parentElement,
                 margins = options.maximizedMargin;
 
             if (parent === document.body) {
@@ -2713,7 +2713,7 @@ export const jsPanel = {
 
             // create container for minimized replacements if not already there
             if (!document.getElementById('jsPanel-replacement-container')) {
-                const replacementContainer = document.createElement('div');
+                var replacementContainer = document.createElement('div');
                 replacementContainer.id = 'jsPanel-replacement-container';
                 document.body.append(replacementContainer);
             }
@@ -2729,7 +2729,7 @@ export const jsPanel = {
             }
 
             if (options.minimizeTo) {
-                const replacement = self.createMinimizedReplacement();
+                var replacement = self.createMinimizedReplacement();
                 let container, parent, list;
                 if (options.minimizeTo === 'default') {
                     document.getElementById('jsPanel-replacement-container').append(replacement);
@@ -2795,7 +2795,7 @@ export const jsPanel = {
         };
 
         self.removeMinimizedReplacement = () => {
-            const elmt = document.getElementById(self.id + '-min');
+            var elmt = document.getElementById(self.id + '-min');
             if (elmt) {
                 elmt.parentElement.removeChild(elmt);
             }
@@ -2824,7 +2824,7 @@ export const jsPanel = {
 
         self.repositionOnSnap = (pos) => {
             let offsetX = '0', offsetY = '0';
-            const margins = jsPanel.pOcontainment(options.dragit.containment);
+            var margins = jsPanel.pOcontainment(options.dragit.containment);
             // calculate offsets
             if (options.dragit.snap.containment) {
                 if (pos === 'left-top') {
@@ -2865,7 +2865,7 @@ export const jsPanel = {
         };
 
         self.resize = (...params) => {
-            const dimensions = window.getComputedStyle(self);
+            var dimensions = window.getComputedStyle(self);
             let size = {width: dimensions.width, height: dimensions.height},
                 updateCache = true,
                 callback;
@@ -2881,7 +2881,7 @@ export const jsPanel = {
                 }
             });
 
-            const values = jsPanel.pOsize(self, size);
+            var values = jsPanel.pOsize(self, size);
             self.style.width = values.width;
             self.style.height = values.height;
             if (updateCache) {self.saveCurrentDimensions();}
@@ -2890,7 +2890,7 @@ export const jsPanel = {
         };
 
         self.resizeit = (string) => {
-            const handles = self.querySelectorAll('.jsPanel-resizeit-handle');
+            var handles = self.querySelectorAll('.jsPanel-resizeit-handle');
             if (string === 'disable') {
                 handles.forEach((handle) => {
                     handle.style.pointerEvents = 'none';
@@ -2904,14 +2904,14 @@ export const jsPanel = {
         };
 
         self.saveCurrentDimensions = () => {
-            const normData = window.getComputedStyle(self);
+            var normData = window.getComputedStyle(self);
             self.currentData.width = normData.width;
             if (self.status === 'normalized') {
                 self.currentData.height = normData.height;
             }
         };
         self.saveCurrentPosition = () => {
-            const normData = window.getComputedStyle(self);
+            var normData = window.getComputedStyle(self);
             self.currentData.left = normData.left;
             self.currentData.top = normData.top;
         };
@@ -2921,7 +2921,7 @@ export const jsPanel = {
                 item.style.display = 'block';
             });
             sel.forEach((item) => {
-                const btn = self.controlbar.querySelector(item);
+                var btn = self.controlbar.querySelector(item);
                 if (btn) {
                     btn.style.display = 'none';
                 }
@@ -2934,7 +2934,7 @@ export const jsPanel = {
             if (action === 'disable') {
                 if (self.getAttribute(`data-btn${ctrl}`) !== 'removed') {
                     self.setAttribute(`data-btn${ctrl}`, 'disabled');
-                    const btn = self.controlbar.querySelector(`.jsPanel-btn-${ctrl}`);
+                    var btn = self.controlbar.querySelector(`.jsPanel-btn-${ctrl}`);
                     btn.style.pointerEvents = 'none';
                     btn.style.opacity = 0.4;
                     btn.style.cursor = 'default';
@@ -2942,13 +2942,13 @@ export const jsPanel = {
             } else if (action === 'enable') {
                 if (self.getAttribute(`data-btn${ctrl}`) !== 'removed') {
                     self.setAttribute(`data-btn${ctrl}`, 'enabled');
-                    const btn = self.controlbar.querySelector(`.jsPanel-btn-${ctrl}`);
+                    var btn = self.controlbar.querySelector(`.jsPanel-btn-${ctrl}`);
                     btn.style.pointerEvents = 'auto';
                     btn.style.opacity = 1;
                     btn.style.cursor = 'pointer';
                 }
             } else if (action === 'remove') {
-                const btn = self.controlbar.querySelector(`.jsPanel-btn-${ctrl}`);
+                var btn = self.controlbar.querySelector(`.jsPanel-btn-${ctrl}`);
                 self.controlbar.removeChild(btn);
                 self.setAttribute(`data-btn${ctrl}`, 'removed');
             }
@@ -2958,7 +2958,7 @@ export const jsPanel = {
         };
 
         self.setHeaderControls = (callback) => {
-            const controls = ['close', 'maximize', 'normalize', 'minimize', 'smallify', 'smallifyrev'],
+            var controls = ['close', 'maximize', 'normalize', 'minimize', 'smallify', 'smallifyrev'],
                 option = options.headerControls;
             if (typeof option === 'string') {
                 if (option === 'none') {
@@ -2993,7 +2993,7 @@ export const jsPanel = {
                     // is assumed to be an img url
                     logos.forEach(function (item) {
                         jsPanel.emptyNode(item);
-                        const img = document.createElement('img');
+                        var img = document.createElement('img');
                         img.src = hdrLogo;
                         item.append(img);
                     });
@@ -3102,11 +3102,11 @@ export const jsPanel = {
 
         self.setSize = () => {
             if (options.panelSize) {
-                const values = jsPanel.pOsize(self, options.panelSize);
+                var values = jsPanel.pOsize(self, options.panelSize);
                 self.style.width = values.width;
                 self.style.height = values.height;
             } else if (options.contentSize) {
-                const values = jsPanel.pOsize(self, options.contentSize);
+                var values = jsPanel.pOsize(self, options.contentSize);
                 self.content.style.width = values.width;
                 self.content.style.height = values.height;
                 self.style.width = values.width; // explicitly assign current width/height to panel
@@ -3126,7 +3126,7 @@ export const jsPanel = {
                 return self;
             }
 
-            const themeDetails = self.getThemeDetails(theme);
+            var themeDetails = self.getThemeDetails(theme);
 
             if (!themeDetails.bs) {
                 if (jsPanel.themes.indexOf(themeDetails.color) !== -1) {
@@ -3391,7 +3391,7 @@ export const jsPanel = {
 
         // option.dragit AND option.resizeit AND option.syncMargins
         if (options.syncMargins) {
-            const containment = this.pOcontainment(options.maximizedMargin);
+            var containment = this.pOcontainment(options.maximizedMargin);
             if (options.dragit) {
                 options.dragit.containment = containment;
                 if (options.dragit.snap) {
@@ -3444,13 +3444,13 @@ export const jsPanel = {
 
         // option.setStatus
         if (options.setStatus) {
-            const newStatus = options.setStatus;
+            var newStatus = options.setStatus;
             if (newStatus === 'smallifiedmax') {
                 self.maximize().smallify();
             } else if (newStatus === 'smallified') {
                 self.smallify();
             } else {
-                const func = newStatus.substr(0,newStatus.length-1);
+                var func = newStatus.substr(0,newStatus.length-1);
                 self[func]();
             }
         }
@@ -3473,7 +3473,7 @@ export const jsPanel = {
         if (options.onwindowresize) {
             window.addEventListener('resize', (e) => {
                 if (e.target === window) {       // see https://bugs.jqueryui.com/ticket/7514
-                    const param = options.onwindowresize,
+                    var param = options.onwindowresize,
                         status = self.status,
                         parentStyles = window.getComputedStyle(self.parentElement);
                     if (status === 'maximized' && param === true) {

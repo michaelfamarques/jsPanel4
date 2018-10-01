@@ -195,7 +195,7 @@ if (!jsPanel.tooltip) {
         },
 
         removeConnector(tip) {
-            const conn = tip.querySelector('.jsPanel-connector');
+            var conn = tip.querySelector('.jsPanel-connector');
             tip.removeChild(conn);
         }
 

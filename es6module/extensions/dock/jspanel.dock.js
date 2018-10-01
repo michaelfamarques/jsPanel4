@@ -20,8 +20,8 @@ function dockPanel (config, cb) {
         master = document.querySelector(conf.master);
     }
     if (!master) {
-        const id = this.id;
-        const error = new jsPanelError('Could not dock panel with id <' + id + '> because the panel to dock to does not exist in the document!');
+        var id = this.id;
+        var error = new jsPanelError('Could not dock panel with id <' + id + '> because the panel to dock to does not exist in the document!');
         try {
             throw error;
         } catch (e) {

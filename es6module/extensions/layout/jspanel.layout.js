@@ -15,7 +15,7 @@ if (!jsPanel.layout) {
             let selector = saveConfig.selector ? saveConfig.selector : '.jsPanel-standard';
             let storage  = saveConfig.storagename ? saveConfig.storagename : 'jspanels';
 
-            const collection = document.querySelectorAll(selector);
+            var collection = document.querySelectorAll(selector);
             let panels = [];
             collection.forEach(item => {
                 let panelData =    item.currentData;
